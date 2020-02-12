@@ -14,6 +14,7 @@ class Container extends React.Component {
 		this.fromQuicktoLong = this.fromQuicktoLong.bind(this);
 		this.scrollRender = this.scrollRender.bind(this);
 		this.filter = this.filter.bind(this);
+		this.filterAll = this.filterAll.bind(this);
 		this.sortFast = this.sortFast.bind(this);
 		this.sortCheap = this.sortCheap.bind(this);
 	}
@@ -85,6 +86,30 @@ class Container extends React.Component {
 		})
 	}
 
+	filterAll() {
+		let props = this.props.data;
+		if ($('#cheap')[0].classList.contains('active')) {
+			props = this.sortCheap(props);
+		} 
+		if ($('#speed')[0].classList.contains('active')) {
+			props = this.sortFast(props);
+		}
+		const all = $('#all')[0];
+		const without = $('#without')[0];
+		const oneStop = $('#oneStop')[0];
+		const twoStop = $('#twoStop')[0];
+		const threeStop = $('#threeStop')[0];
+		if (all.checked) {
+			without.checked = false;
+			oneStop.checked = false;
+			twoStop.checked = false;
+			threeStop.checked = false;
+			this.setState ({
+				data: props.slice(0, this.state.data.length),
+			})
+		}
+	}
+
 	filter() {
 		let key = []
 		const all = $('#all')[0];
@@ -104,15 +129,6 @@ class Container extends React.Component {
 		if (threeStop.checked) {
 			key.push('3');
 		}
-		if (all.checked) {
-			without.checked = false;
-			oneStop.checked = false;
-			twoStop.checked = false;
-			threeStop.checked = false;
-			this.setState ({
-				data: this.props.data.slice(0, this.state.data.length),
-			})
-		} 
 		if (without.checked === false && oneStop.checked === false 
 			&& twoStop.checked === false && threeStop.checked === false) {
 			all.checked = true;
@@ -127,10 +143,10 @@ class Container extends React.Component {
 				} 
 			})
 			let result = mapped.filter(number => number !== undefined);
-			if ($('#speed')[0].classList.contains('active')) {
+			if ($('#cheap')[0].classList.contains('active')) {
 				result = this.sortCheap(result);
 			} 
-			if ($('#cheap')[0].classList.contains('active')) {
+			if ($('#speed')[0].classList.contains('active')) {
 				result = this.sortFast(result);
 			}
 			this.setState({
@@ -221,7 +237,7 @@ class Container extends React.Component {
 				<div id="filter">
 					<p>Количество пересадок</p>
 					<label className="containerCheck">Все
-						<input onChange={this.filter} id="all" type="checkbox"/>
+						<input onChange={this.filterAll} id="all" type="checkbox"/>
 						<span className="checkmark"></span>
 					</label>
 					<label className="containerCheck">Без пересадок
