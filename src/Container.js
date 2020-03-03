@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 import './style.css';
 // import TicketList from './TicketList.js';
 
@@ -9,14 +8,15 @@ class Container extends React.Component {
 		this.state = {
 			data:[],
 			example:this.props.data,
-		}
+			checkCh:false,
+			checkFt:false,
+		};
 		this.fromCheapToExp = this.fromCheapToExp.bind(this);
-		this.fromQuicktoLong = this.fromQuicktoLong.bind(this);
-		this.scrollRender = this.scrollRender.bind(this);
-		this.filter = this.filter.bind(this);
-		this.filterAll = this.filterAll.bind(this);
-		this.sortFast = this.sortFast.bind(this);
-		this.sortCheap = this.sortCheap.bind(this);
+		this.fromQuickToLong = this.fromQuickToLong.bind(this);
+		// this.scrollRender = this.scrollRender.bind(this);
+		// this.filter = this.filter.bind(this);
+		// this.filterAll = this.filterAll.bind(this);
+		this.sort = this.sort.bind(this);
 	}
 
 	componentDidMount() {
@@ -26,142 +26,136 @@ class Container extends React.Component {
     	})
     }
 
-    scrollRender() {
-		let list = this.state.example;
-		let n = this.state.data.length;
-		let maxScrollTop = ($('#ticket-container')[0].scrollHeight - 1025);
-	    if ($('#ticket-container')[0].scrollTop === maxScrollTop) {
-	    	n = n + 10;
-	    	this.setState({
-	    		data:list.slice(0,n),
-	   		})
-	    }
-    }
+    // scrollRender() {
+	// 	let list = this.state.example;
+	// 	let n = this.state.data.length;
+	// 	let maxScrollTop = ($('#ticket-container')[0].scrollHeight - 1025);
+	//     if ($('#ticket-container')[0].scrollTop === maxScrollTop) {
+	//     	n = n + 10;
+	//     	this.setState({
+	//     		data:list.slice(0,n),
+	//    		})
+	//     }
+    // }
 
-    sortCheap(arr) {
-    	let mapped = arr.map((number, i) => {
-			return { index: i, value: number.price};
-		});
+    sort(arr) {
+		let mapped;
+		if (this.state.checkCh) {
+			mapped = arr.map((number, i) => {
+				return { index: i, value: number.price};
+			});
+		}
+		if (this.state.checkFt) {
+			mapped = arr.map((number, i) => {
+				return { index: i, value: number.segments[0].duration + number.segments[1].duration};
+			});
+		}
 		mapped.sort(function(a, b) {
 			return a.value - b.value;
-		});	
+		});
 		let result = mapped.map((number) => {
 			return arr[number.index];
 		});
-		return result;
-    }
-
-    sortFast(arr) {
-    	let mapped = arr.map((number, i) => {
-			return { index: i, value: number.segments[0].duration + number.segments[1].duration};
-		});
-		mapped.sort(function(a, b) {
-			return a.value - b.value;
-		});	
-		let result = mapped.map((number) => {
-			return arr[number.index];
-		});
-		return result;
-    }
-
-	fromCheapToExp() {
-		let arr = this.state.example;
-		let result = this.sortCheap(arr);
-		$('#cheap')[0].classList.add('active');
-		$('#speed')[0].classList.remove('active');
 		this.setState ({
 			data: result.slice(0,this.state.data.length),
 			example: result,
 		})
-	}
+    }
 
-	fromQuicktoLong() {
-		let arr = this.state.example;
-		let result = this.sortFast(arr);
-		$('#speed')[0].classList.add('active');
-		$('#cheap')[0].classList.remove('active');
-		this.setState ({
-			data: result.slice(0, this.state.data.length),
-			example: result,
+	fromCheapToExp() {
+		this.setState({
+			checkCh:true,
+			checkFt:false,
+		}, () => {
+			this.sort(this.state.example);
 		})
 	}
 
-	filterAll() {
-		let props = this.props.data;
-		if ($('#cheap')[0].classList.contains('active')) {
-			props = this.sortCheap(props);
-		} 
-		if ($('#speed')[0].classList.contains('active')) {
-			props = this.sortFast(props);
-		}
-		const all = $('#all')[0];
-		const without = $('#without')[0];
-		const oneStop = $('#oneStop')[0];
-		const twoStop = $('#twoStop')[0];
-		const threeStop = $('#threeStop')[0];
-		if (all.checked) {
-			without.checked = false;
-			oneStop.checked = false;
-			twoStop.checked = false;
-			threeStop.checked = false;
-			this.setState ({
-				data: props.slice(0, this.state.data.length),
-			})
-		}
+	fromQuickToLong() {
+		this.setState({
+			checkFt:true,
+			checkCh:false,
+		}, () => {
+			this.sort(this.state.example);
+		})
 	}
-
-	filter() {
-		let key = []
-		const all = $('#all')[0];
-		const without = $('#without')[0];
-		const oneStop = $('#oneStop')[0];
-		const twoStop = $('#twoStop')[0];
-		const threeStop = $('#threeStop')[0];
-		if (without.checked) {
-			key.push('0');
-		}
-		if (oneStop.checked) {
-			key.push('1');
-		}
-		if (twoStop.checked) {
-			key.push('2');
-		}
-		if (threeStop.checked) {
-			key.push('3');
-		}
-		if (without.checked === false && oneStop.checked === false 
-			&& twoStop.checked === false && threeStop.checked === false) {
-			all.checked = true;
-			this.setState({
-				data: this.props.data.slice(0, this.state.data.length),
-			})
-		} else {
-			all.checked = false;
-			let mapped = this.props.data.map((number) => {
-				if (key.includes(number.stops[0]) && key.includes(number.stops[1])){	
-					return number;
-				} 
-			})
-			let result = mapped.filter(number => number !== undefined);
-			if ($('#cheap')[0].classList.contains('active')) {
-				result = this.sortCheap(result);
-			} 
-			if ($('#speed')[0].classList.contains('active')) {
-				result = this.sortFast(result);
-			}
-			this.setState({
-				data: result.splice(0, this.state.data.length),
-				example: result,
-			})
-		}
-	}
+	//
+	// filterAll() {
+	// 	let props = this.props.data;
+	// 	if ($('#cheap')[0].classList.contains('active')) {
+	// 		props = this.sortCheap(props);
+	// 	}
+	// 	if ($('#speed')[0].classList.contains('active')) {
+	// 		props = this.sortFast(props);
+	// 	}
+	// 	const all = $('#all')[0];
+	// 	const without = $('#without')[0];
+	// 	const oneStop = $('#oneStop')[0];
+	// 	const twoStop = $('#twoStop')[0];
+	// 	const threeStop = $('#threeStop')[0];
+	// 	if (all.checked) {
+	// 		without.checked = false;
+	// 		oneStop.checked = false;
+	// 		twoStop.checked = false;
+	// 		threeStop.checked = false;
+	// 		this.setState ({
+	// 			data: props.slice(0, this.state.data.length),
+	// 		})
+	// 	}
+	// }
+	//
+	// filter() {
+	// 	let key = []
+	// 	const all = $('#all')[0];
+	// 	const without = $('#without')[0];
+	// 	const oneStop = $('#oneStop')[0];
+	// 	const twoStop = $('#twoStop')[0];
+	// 	const threeStop = $('#threeStop')[0];
+	// 	if (without.checked) {
+	// 		key.push('0');
+	// 	}
+	// 	if (oneStop.checked) {
+	// 		key.push('1');
+	// 	}
+	// 	if (twoStop.checked) {
+	// 		key.push('2');
+	// 	}
+	// 	if (threeStop.checked) {
+	// 		key.push('3');
+	// 	}
+	// 	if (without.checked === false && oneStop.checked === false
+	// 		&& twoStop.checked === false && threeStop.checked === false) {
+	// 		all.checked = true;
+	// 		this.setState({
+	// 			data: this.props.data.slice(0, this.state.data.length),
+	// 		})
+	// 	} else {
+	// 		all.checked = false;
+	// 		let mapped = this.props.data.map((number) => {
+	// 			if (key.includes(number.stops[0]) && key.includes(number.stops[1])){
+	// 				return number;
+	// 			}
+	// 		});
+	// 		let result = mapped.filter(number => number !== undefined);
+	// 		if ($('#cheap')[0].classList.contains('active')) {
+	// 			result = this.sortCheap(result);
+	// 		}
+	// 		if ($('#speed')[0].classList.contains('active')) {
+	// 			result = this.sortFast(result);
+	// 		}
+	// 		this.setState({
+	// 			data: result.splice(0, this.state.data.length),
+	// 			example: result,
+	// 		})
+	// 	}
+	// }
 
 	render() {
 		console.log(this.state.data);
 		function getTimeFromMins(mins, duration) {
 			let startHours = +mins.slice(0, 2);
 			let startMinutes = +mins.slice(3, 5);
-			let allMinutes = startHours*60 + startMinutes + duration
+			let allMinutes = (startHours * 60 + startMinutes + duration);
 		    let hours = Math.trunc(allMinutes % 1440 / 60);
 		    let minutes = allMinutes % 60;
 		    if (hours < 10) {
@@ -182,17 +176,17 @@ class Container extends React.Component {
 		    	minutes = '0' + minutes;
 		    }
 		    return hours + 'h ' + minutes + 'm ';
-		};
+		}
 		function allFromArr(item) {
 			let line = '';
 			if (item !== undefined) {
-				for (var i = 0; i<item.length; i++) {
+				for (let i = 0; i<item.length; i++) {
 					line = line + item[i] +  ' ';
 				}
 			}
 			return line;
 		}
-		const listPrices = this.state.data.map((number, index) => 
+		const listPrices = this.state.data.map((number, index) =>
 			<div key={index} className="ticket">
 				<div className="top">
 					<p>{number.price + ' P'}</p>
@@ -232,37 +226,38 @@ class Container extends React.Component {
 				</div>
 			</div>
 		);
+		const checkmark = <span className="checkmark"/>;
 		return(
 			<div id="container">
 				<div id="filter">
 					<p>Количество пересадок</p>
 					<label className="containerCheck">Все
 						<input onChange={this.filterAll} id="all" type="checkbox"/>
-						<span className="checkmark"></span>
+						{checkmark}
 					</label>
 					<label className="containerCheck">Без пересадок
 						<input onChange={this.filter} id="without" type="checkbox" />
-						<span className="checkmark"></span>
+						{checkmark}
 					</label>
 					<label className="containerCheck">1 пересадка
 						<input onChange={this.filter} id="oneStop" type="checkbox" />
-						<span className="checkmark"></span>
+						{checkmark}
 					</label>
 					<label className="containerCheck">2 пересадки
 						<input onChange={this.filter} id="twoStop" type="checkbox" />
-						<span className="checkmark"></span>
+						{checkmark}
 					</label>
 					<label className="containerCheck">3 пересадки
 						<input onChange={this.filter} id="threeStop" type="checkbox" />
-						<span className="checkmark"></span>
+						{checkmark}
 					</label>
 				</div>
 				<div id="second-main">
 					<div id="tabs">
-						<div onClick={this.fromCheapToExp} id="cheap">
+						<div onClick={this.fromCheapToExp} className={this.state.checkCh ? "active" : ""} id="cheap">
 							<p>Самый дешевый</p>
 						</div>
-						<div onClick={this.fromQuicktoLong} id="speed">
+						<div onClick={this.fromQuickToLong} className={this.state.checkFt ? "active" : ""} id="speed">
 							<p>Самый быстрый</p>
 						</div>
 					</div>
@@ -271,7 +266,7 @@ class Container extends React.Component {
 					</div>
 				</div>
 			</div>
-			
+
 		);
 	}
 }
