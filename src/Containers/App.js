@@ -2,7 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import './style.css';
 import GetTickets from './GetTickets.js';
-import Container from './Container.js';
+import Container from './Container';
 
 class App extends React.Component {
 	constructor(props){
@@ -32,7 +32,7 @@ class App extends React.Component {
 				this.setState({
 					data:result,
 					example:result,
-				})					
+				})
 			});
 		})
 	}
@@ -46,7 +46,7 @@ class App extends React.Component {
 					</div>
 					<Container data={this.state.data} />
 				</div>
-			); 
+			);
 		}
 		else{
 			return(
@@ -55,8 +55,8 @@ class App extends React.Component {
 						<i className="icon fas fa-plane-departure"></i>
 					</div>
 				</div>
-			); 
-		}		
+			);
+		}
 	}
 }
 

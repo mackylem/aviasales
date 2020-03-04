@@ -1,5 +1,6 @@
 import React from 'react';
 import './style.css';
+import Tabs from './Tabs'
 // import TicketList from './TicketList.js';
 
 class Container extends React.Component {
@@ -8,11 +9,7 @@ class Container extends React.Component {
 		this.state = {
 			data:[],
 			example:this.props.data,
-			checkCh:false,
-			checkFt:false,
 		};
-		this.fromCheapToExp = this.fromCheapToExp.bind(this);
-		this.fromQuickToLong = this.fromQuickToLong.bind(this);
 		// this.scrollRender = this.scrollRender.bind(this);
 		// this.filter = this.filter.bind(this);
 		// this.filterAll = this.filterAll.bind(this);
@@ -38,18 +35,8 @@ class Container extends React.Component {
 	//     }
     // }
 
-    sort(arr) {
-		let mapped;
-		if (this.state.checkCh) {
-			mapped = arr.map((number, i) => {
-				return { index: i, value: number.price};
-			});
-		}
-		if (this.state.checkFt) {
-			mapped = arr.map((number, i) => {
-				return { index: i, value: number.segments[0].duration + number.segments[1].duration};
-			});
-		}
+    sort(mapped) {
+		let arr;
 		mapped.sort(function(a, b) {
 			return a.value - b.value;
 		});
@@ -61,24 +48,6 @@ class Container extends React.Component {
 			example: result,
 		})
     }
-
-	fromCheapToExp() {
-		this.setState({
-			checkCh:true,
-			checkFt:false,
-		}, () => {
-			this.sort(this.state.example);
-		})
-	}
-
-	fromQuickToLong() {
-		this.setState({
-			checkFt:true,
-			checkCh:false,
-		}, () => {
-			this.sort(this.state.example);
-		})
-	}
 	//
 	// filterAll() {
 	// 	let props = this.props.data;
@@ -253,14 +222,7 @@ class Container extends React.Component {
 					</label>
 				</div>
 				<div id="second-main">
-					<div id="tabs">
-						<div onClick={this.fromCheapToExp} className={this.state.checkCh ? "active" : ""} id="cheap">
-							<p>Самый дешевый</p>
-						</div>
-						<div onClick={this.fromQuickToLong} className={this.state.checkFt ? "active" : ""} id="speed">
-							<p>Самый быстрый</p>
-						</div>
-					</div>
+					<Tabs sort={this.sort} data={this.props.data}/>
 					<div onScroll={this.scrollRender} id="ticket-container">
 						{listPrices}
 					</div>
