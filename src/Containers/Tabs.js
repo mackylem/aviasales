@@ -12,7 +12,6 @@ class Tabs extends React.Component {
         this.fromCheapToExp = this.fromCheapToExp.bind(this);
         this.fromQuickToLong = this.fromQuickToLong.bind(this);
         this.pickSort = this.pickSort.bind(this);
-
     }
 
     pickSort() {
@@ -25,10 +24,10 @@ class Tabs extends React.Component {
         }
         if (this.state.checkFt) {
             mapped = arr.map((number, i) => {
-                return { index: i, value: number.segments[0].duration + number.segments[1].duration};
+                return {index: i, value: number.segments[0].duration + number.segments[1].duration};
             });
         }
-        this.props.sort(mapped);
+        this.props.sort(mapped, arr);
     }
 
     fromCheapToExp() {

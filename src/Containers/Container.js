@@ -1,27 +1,43 @@
 import React from 'react';
 import './style.css';
 import Tabs from './Tabs'
-// import TicketList from './TicketList.js';
+import GetTickets from "./GetTickets";
+
 
 class Container extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			data:[],
-			example:this.props.data,
+			example:[],
 		};
 		// this.scrollRender = this.scrollRender.bind(this);
 		// this.filter = this.filter.bind(this);
 		// this.filterAll = this.filterAll.bind(this);
 		this.sort = this.sort.bind(this);
+		this.listTickets = this.listTickets.bind(this);
 	}
 
 	componentDidMount() {
-		let list = this.state.example;
-    	this.setState({
-    		data:list.slice(0,10),
-    	})
+		this.listTickets();
     }
+
+	listTickets() {
+		const getTicket = new GetTickets();
+
+		getTicket.getSearchId().then(v => {
+			getTicket.getListTickets(v).then(v => {
+				let result = v.map((number) => {
+					number.stops = number.segments[0].stops.length + '' + number.segments[1].stops.length;
+					return number;
+				});
+				this.setState({
+					data:result.slice(0,10),
+					example:result,
+				})
+			});
+		})
+	}
 
     // scrollRender() {
 	// 	let list = this.state.example;
@@ -35,8 +51,7 @@ class Container extends React.Component {
 	//     }
     // }
 
-    sort(mapped) {
-		let arr;
+    sort(mapped, arr) {
 		mapped.sort(function(a, b) {
 			return a.value - b.value;
 		});
@@ -196,40 +211,46 @@ class Container extends React.Component {
 			</div>
 		);
 		const checkmark = <span className="checkmark"/>;
-		return(
-			<div id="container">
-				<div id="filter">
-					<p>Количество пересадок</p>
-					<label className="containerCheck">Все
-						<input onChange={this.filterAll} id="all" type="checkbox"/>
-						{checkmark}
-					</label>
-					<label className="containerCheck">Без пересадок
-						<input onChange={this.filter} id="without" type="checkbox" />
-						{checkmark}
-					</label>
-					<label className="containerCheck">1 пересадка
-						<input onChange={this.filter} id="oneStop" type="checkbox" />
-						{checkmark}
-					</label>
-					<label className="containerCheck">2 пересадки
-						<input onChange={this.filter} id="twoStop" type="checkbox" />
-						{checkmark}
-					</label>
-					<label className="containerCheck">3 пересадки
-						<input onChange={this.filter} id="threeStop" type="checkbox" />
-						{checkmark}
-					</label>
-				</div>
-				<div id="second-main">
-					<Tabs sort={this.sort} data={this.props.data}/>
-					<div onScroll={this.scrollRender} id="ticket-container">
-						{listPrices}
+		if (this.state.data[0] !== undefined) {
+			return(
+				<div id="container">
+					<div id="filter">
+						<p>Количество пересадок</p>
+						<label className="containerCheck">Все
+							<input onChange={this.filterAll} id="all" type="checkbox"/>
+							{checkmark}
+						</label>
+						<label className="containerCheck">Без пересадок
+							<input onChange={this.filter} id="without" type="checkbox" />
+							{checkmark}
+						</label>
+						<label className="containerCheck">1 пересадка
+							<input onChange={this.filter} id="oneStop" type="checkbox" />
+							{checkmark}
+						</label>
+						<label className="containerCheck">2 пересадки
+							<input onChange={this.filter} id="twoStop" type="checkbox" />
+							{checkmark}
+						</label>
+						<label className="containerCheck">3 пересадки
+							<input onChange={this.filter} id="threeStop" type="checkbox" />
+							{checkmark}
+						</label>
+					</div>
+					<div id="second-main">
+						<Tabs sort={this.sort} data={this.state.example}/>
+						<div onScroll={this.scrollRender} id="ticket-container">
+							{listPrices}
+						</div>
 					</div>
 				</div>
-			</div>
+			);
+		} else {
+			return(
+				<div/>
+			)
+		}
 
-		);
 	}
 }
 
