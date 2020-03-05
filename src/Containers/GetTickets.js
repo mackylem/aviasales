@@ -5,7 +5,7 @@ class GetTickets {
 	async getSearchId() {
 		const req = await fetch(searchUrl, {
 			method: 'GET',
-		})
+		});
 		const {searchId} = await req.json();
 		return searchId;
 	}
@@ -21,7 +21,7 @@ class GetTickets {
 		} catch (error) {
 			return {};
 		}
-		
+
 	}
 
 	async getListTickets(searchId) {

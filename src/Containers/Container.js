@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 import Tabs from './Tabs'
 import GetTickets from "./GetTickets";
-import {getTime, getTimeFromMins, allFromArr} from "../helper/times";
+import Tickets from "./Tickets";
 
 
 class Container extends React.Component {
@@ -30,6 +30,7 @@ class Container extends React.Component {
 			getTicket.getListTickets(v).then(v => {
 				let result = v.map((number) => {
 					number.stops = number.segments[0].stops.length + '' + number.segments[1].stops.length;
+					number.id = number.price + number.carrier;
 					return number;
 				});
 				this.setState({
@@ -137,46 +138,6 @@ class Container extends React.Component {
 
 	render() {
 		console.log(this.state.data);
-		const listPrices = this.state.data.map((number, index) =>
-			<div key={index} className="ticket">
-				<div className="top">
-					<p>{number.price + ' P'}</p>
-					<p>{number.carrier + ' Airlines'}</p>
-				</div>
-				<div className="string">
-					<div className="item">
-						<p className="secondaryText">MOW - HKT</p>
-						<p className="primaryText">{number.segments[0].date.slice(11, 16)
-					 		+ ' - ' + getTimeFromMins(number.segments[0].date.slice(11, 16),
-					  		number.segments[0].duration)}</p>
-					</div>
-					<div className="item">
-						<p className="secondaryText">В пути</p>
-						<p className="primaryText">{getTime(number.segments[0].duration)}</p>
-					</div>
-					<div className="item">
-						<p className="secondaryText">Пересадки</p>
-						<p className="primaryText">{allFromArr(number.segments[0].stops)}</p>
-					</div>
-				</div>
-				<div className="string">
-					<div className="item">
-						<p className="secondaryText">HKT - MOW</p>
-						<p className="primaryText">{number.segments[1].date.slice(11, 16)
-					 		+ ' - ' + getTimeFromMins(number.segments[1].date.slice(11, 16),
-					  		number.segments[1].duration)}</p>
-					</div>
-					<div className="item">
-						<p className="secondaryText">В пути</p>
-						<p className="primaryText">{getTime(number.segments[1].duration)}</p>
-					</div>
-					<div className="item">
-						<p className="secondaryText">Пересадки</p>
-						<p className="primaryText">{allFromArr(number.segments[1].stops)}</p>
-					</div>
-				</div>
-			</div>
-		);
 		const checkmark = <span className="checkmark"/>;
 		if (this.state.data[0] !== undefined) {
 			return(
@@ -207,7 +168,11 @@ class Container extends React.Component {
 					<div id="second-main">
 						<Tabs sort={this.sort} data={this.state.example}/>
 						<div onScroll={this.scrollRender} id="ticket-container">
-							{listPrices}
+							{
+								this.state.data.map((number) =>
+									<Tickets data={number} key={number.id} />
+								)
+							}
 						</div>
 					</div>
 				</div>
