@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e80e2763-bcfb-47f4-af14-62845e008e14" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Containers/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Containers/Container.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Containers/Container.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Containers/GetTickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Containers/GetTickets.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +30,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../react-test-task" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -58,7 +56,8 @@
       <workItem from="1583348090475" duration="1504000" />
       <workItem from="1583401849805" duration="42000" />
       <workItem from="1583435009598" duration="5183000" />
-      <workItem from="1583447303991" duration="421000" />
+      <workItem from="1583447303991" duration="679000" />
+      <workItem from="1583480106477" duration="2730000" />
     </task>
     <servers />
   </component>
@@ -66,10 +65,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="499" y="141" width="424" height="482" key="FileChooserDialogImpl" timestamp="1583401890276">
+    <state x="499" y="141" width="424" height="482" key="FileChooserDialogImpl" timestamp="1583489789027">
       <screen x="57" y="24" width="1309" height="744" />
     </state>
-    <state x="499" y="141" width="424" height="482" key="FileChooserDialogImpl/57.24.1309.744@57.24.1309.744" timestamp="1583401890276" />
+    <state x="499" y="141" width="424" height="482" key="FileChooserDialogImpl/57.24.1309.744@57.24.1309.744" timestamp="1583489789027" />
     <state x="57" y="-4" width="1309" height="772" key="SettingsEditor" timestamp="1583248823467">
       <screen x="57" y="24" width="1309" height="744" />
     </state>

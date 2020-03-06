@@ -12,7 +12,7 @@ class Container extends React.Component {
 			data:[],
 			example:[],
 		};
-		// this.scrollRender = this.scrollRender.bind(this);
+		this.scrollRender = this.scrollRender.bind(this);
 		// this.filter = this.filter.bind(this);
 		// this.filterAll = this.filterAll.bind(this);
 		this.sort = this.sort.bind(this);
@@ -41,17 +41,15 @@ class Container extends React.Component {
 		})
 	}
 
-    // scrollRender() {
-	// 	let list = this.state.example;
-	// 	let n = this.state.data.length;
-	// 	let maxScrollTop = ($('#ticket-container')[0].scrollHeight - 1025);
-	//     if ($('#ticket-container')[0].scrollTop === maxScrollTop) {
-	//     	n = n + 10;
-	//     	this.setState({
-	//     		data:list.slice(0,n),
-	//    		})
-	//     }
-    // }
+    scrollRender(target) {
+		let length = this.state.data.length;
+		if (target.scrollTop >= (target.scrollTopMax - 10)) {
+			length = length + 10;
+	    	this.setState({
+	    		data:this.state.example.slice(0,length),
+	   		})
+	    }
+    }
 
     sort(mapped, arr) {
 		mapped.sort(function(a, b) {
@@ -167,7 +165,7 @@ class Container extends React.Component {
 					</div>
 					<div id="second-main">
 						<Tabs sort={this.sort} data={this.state.example}/>
-						<div onScroll={this.scrollRender} id="ticket-container">
+						<div onScroll={e => this.scrollRender(e.target)} id="ticket-container">
 							{
 								this.state.data.map((number) =>
 									<Tickets data={number} key={number.id} />
