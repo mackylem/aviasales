@@ -27,7 +27,13 @@ class Tabs extends React.Component {
                 return {index: i, value: number.segments[0].duration + number.segments[1].duration};
             });
         }
-        this.props.sort(mapped, arr);
+        mapped.sort(function(a, b) {
+            return a.value - b.value;
+        });
+        let result = mapped.map((number) => {
+            return arr[number.index];
+        });
+        this.props.sort(result);
     }
 
     fromCheapToExp() {

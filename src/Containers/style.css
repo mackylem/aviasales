@@ -34,15 +34,15 @@ p {
 #filter {
   padding: 20px;
   margin-right: 20px;
-  height: 252px;
+  height: 263px;
   width: 232px;
   border: 2px solid #DFE5EC;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   background-color: white;
 }
 #filter p {
-  font-family: Open Sans;
+  font-family: Open Sans, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -71,7 +71,7 @@ p {
   border-bottom-left-radius: 10px;
 }
 #cheap p {
-  font-family: Open Sans;
+  font-family: Open Sans, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -91,7 +91,7 @@ p {
   border-color: #2196F3 !important;
 }
 #speed p {
-  font-family: Open Sans;
+  font-family: Open Sans, sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -134,12 +134,16 @@ p {
   height: 154px;
   width: 463px;
   background: white;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border: 2px solid #DFE5EC;
   padding: 20px 20px 10px 20px;
 }
-.ticket:last-child {
+.ticketCont {
+  margin-bottom: 20px;
+}
+
+.ticketCont:last-child {
   margin-bottom: 0;
 }
 .top {
@@ -193,7 +197,7 @@ p {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-family: Open Sans;
+  font-family: Open Sans, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;

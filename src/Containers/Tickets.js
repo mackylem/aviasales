@@ -44,7 +44,7 @@ class Tickets extends React.Component {
                 </div>
             </div>;
         return(
-            <div>
+            <div className="ticketCont">
                 {listPrices}
             </div>
         );

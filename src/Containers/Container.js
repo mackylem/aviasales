@@ -51,13 +51,7 @@ class Container extends React.Component {
 	    }
     }
 
-    sort(mapped, arr) {
-		mapped.sort(function(a, b) {
-			return a.value - b.value;
-		});
-		let result = mapped.map((number) => {
-			return arr[number.index];
-		});
+    sort(result) {
 		this.setState ({
 			data: result.slice(0,this.state.data.length),
 			example: result,

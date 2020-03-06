@@ -40,16 +40,16 @@ p {
 #filter {
 	padding: 20px;
 	margin-right: 20px;
-	height: 252px;
+	height: 263px;
 	width: 232px;
 	border: 2px solid @color_border;
-	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 	background-color: @color_objects_background;
 }
 
 #filter p {
-	font-family: Open Sans;
+	font-family: Open Sans, sans-serif;
 	font-style: normal;
 	font-weight: 600;
 	font-size: 12px;
@@ -83,7 +83,7 @@ p {
 }
 
 #cheap p {
-	font-family: Open Sans;
+	font-family: Open Sans, sans-serif;
 	font-style: normal;
 	font-weight: 600;
 	font-size: 12px;
@@ -106,7 +106,7 @@ p {
 }
 
 #speed p {
-	font-family: Open Sans;
+	font-family: Open Sans, sans-serif;
 	font-style: normal;
 	font-weight: 600;
 	font-size: 12px;
@@ -152,7 +152,6 @@ p {
 }
 
 .ticket {
-	margin-bottom: 20px;
 	height: 154px;
 	width: 463px;
 	background: @color_objects_background;
@@ -162,10 +161,18 @@ p {
 	padding: 20px 20px 10px 20px;
 }
 
+.ticketCont {
+	margin-bottom: 20px;
+}
+
+.ticketCont:last-child {
+	margin-bottom: 0;
+}
+
 .top {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 30px 20px 0; 
+	margin: 0 30px 20px 0;
 	height: 36px;
 }
 
@@ -220,7 +227,7 @@ p {
 	-ms-user-select: none;
 	user-select: none;
 
-	font-family: Open Sans;
+	font-family: Open Sans, sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 13px;
